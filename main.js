@@ -17,8 +17,13 @@ app.use(express.json());
 app.use(morgan('dev'));    // Logger
 
 app.get('/contacts', async (req, res) => {
+  const userId = req.query.userId;
   try {
-    const contacts = await getAllContacts();
+    if (!userId) {
+      res.status(400).send("Missing user ID");
+      return;
+    }
+    const contacts = await getAllContacts(userId);
     res.json(contacts);
   } catch (err) {
     res.status(500).send('Failed to retrieve contacts');
@@ -26,13 +31,13 @@ app.get('/contacts', async (req, res) => {
 });
 
 app.post('/contacts', async (req, res) => {
-  const { full_name, gender, email, phone } = req.body;
-  if (!full_name || !gender || !email || !phone) {
+  const { userId, full_name, gender, email, phone } = req.body;
+  if (!userId || !full_name || !gender || !email || !phone) {
     res.status(400).send('Missing required fields');
     return;
   }
   try {
-    await insertContact(full_name, gender, email, phone);
+    await insertContact(userId, full_name, gender, email, phone);
     res.status(201).send('Contact added');
   } catch (err) {
     res.status(500).send(`Error adding contact: ${err.message}`);
@@ -41,12 +46,17 @@ app.post('/contacts', async (req, res) => {
 
 app.delete('/contacts/:email', async (req, res) => {
   const { email } = req.params;
+  const { userId } = req.body; 
+  if (!userId) {
+    res.status(400).send("Missing user ID");
+    return;
+  }
   try {
-    const result = await deleteContact(email);
+    const result = await deleteContact(email, userId);
     if (result.deletedCount === 0) {
-      res.status(404).send('No contact found with that email.');
+      res.status(404).send('No contact found with that email or you are not authorized to delete it.');
     } else {
-      res.status(200).send({ message: 'Contact deleted', ...result });
+      res.status(200).send({ message: 'Contact deleted' });
     }
   } catch (err) {
     res.status(500).send(`Error deleting contact: ${err.message}`);

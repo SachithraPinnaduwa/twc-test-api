@@ -1,9 +1,15 @@
 // mongodb.js
 import { Contact } from './models/contact.js';
 
-export const insertContact = async (full_name, gender, email, phone) => {
+export const insertContact = async (userId, full_name, gender, email, phone) => {
   try {
-    const contact = new Contact({ full_name, gender, email, phone });
+    const contact = new Contact({
+      full_name,
+      gender,
+      email,
+      phone,
+      user: userId  
+    });
     await contact.save();
     return contact;
   } catch (error) {
@@ -11,17 +17,18 @@ export const insertContact = async (full_name, gender, email, phone) => {
   }
 };
 
-export const getAllContacts = async () => {
+export const getAllContacts = async (userId = null) => {
   try {
-    return await Contact.find({});
+    const query = userId ? { user: userId } : {};
+    return await Contact.find(query);
   } catch (error) {
     throw error;
   }
 };
 
-export const deleteContact = async (email) => {
+export const deleteContact = async (email, userId) => {
   try {
-    const result = await Contact.deleteOne({ email });
+    const result = await Contact.deleteOne({ email, user: userId });
     return result;
   } catch (error) {
     throw error;
