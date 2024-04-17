@@ -34,3 +34,21 @@ export const deleteContact = async (email, userId) => {
     throw error;
   }
 };
+
+
+export const updateContact = async (email, full_name, gender, phone) => {
+  try {
+    const updatedContact = await Contact.findOneAndUpdate(
+      { email }, // find a document by email
+      {
+        full_name,
+        gender,
+        phone
+      },
+      { new: true } // option to return the updated document
+    );
+    return updatedContact;
+  } catch (error) {
+    throw error;
+  }
+};

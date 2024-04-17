@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import { ObjectId } from 'mongodb';
 import { getAllUsers, addUser, deleteUser, getUser } from './userFunctions.js'; // Updated to import MongoDB functions
-import { insertContact, getAllContacts, deleteContact } from './mongodb.js'; // Updated to import MongoDB functions
+import { insertContact, getAllContacts, deleteContact,updateContact } from './mongodb.js'; // Updated to import MongoDB functions
 import { connectToDatabase,disconnectFromDatabase } from './mongoconnect.js'; // Import the connectDB function
 import { get } from 'mongoose';
 dotenv.config();
@@ -43,6 +43,26 @@ app.post('/contacts', async (req, res) => {
     res.status(500).send(`Error adding contact: ${err.message}`);
   }
 });
+
+app.put('/contacts/:email', async (req, res) => {
+  const { full_name, gender, phone } = req.body;
+  const { email } = req.body;
+  if (!full_name || !gender || !phone) {
+    res.status(400).send('Missing required fields');
+    return;
+  }
+  try {
+    const contact = await updateContact(email, full_name, gender, phone);
+    if (!contact) {
+      res.status(404).send('Contact not found');
+      return;
+    }
+    res.status(200).send(contact);
+  } catch (err) {
+    res.status(500).send(`Error updating contact: ${err.message}`);
+  }
+});
+
 
 app.delete('/contacts/:email', async (req, res) => {
   const { email } = req.params;
