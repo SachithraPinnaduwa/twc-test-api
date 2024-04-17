@@ -1,7 +1,6 @@
-// UserSchema.js
+
 import mongoose from 'mongoose';
 
-// Defining the user schema
 const userSchema = new mongoose.Schema({
   email: {
     type: String,
@@ -14,8 +13,8 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-// Creating the User model
+
 const User = mongoose.model('User', userSchema);
 
-// Exporting the User model
+
 export { User };

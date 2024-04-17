@@ -1,4 +1,4 @@
-// mongodb.js
+
 import { Contact } from './models/contact.js';
 
 export const insertContact = async (userId, full_name, gender, email, phone) => {
@@ -39,13 +39,13 @@ export const deleteContact = async (email, userId) => {
 export const updateContact = async (email, full_name, gender, phone) => {
   try {
     const updatedContact = await Contact.findOneAndUpdate(
-      { email }, // find a document by email
+      { email }, 
       {
         full_name,
         gender,
         phone
       },
-      { new: true } // option to return the updated document
+      { new: true } 
     );
     return updatedContact;
   } catch (error) {

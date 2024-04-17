@@ -3,9 +3,9 @@ import morgan from 'morgan';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import { ObjectId } from 'mongodb';
-import { getAllUsers, addUser, deleteUser, getUser } from './userFunctions.js'; // Updated to import MongoDB functions
-import { insertContact, getAllContacts, deleteContact,updateContact } from './mongodb.js'; // Updated to import MongoDB functions
-import { connectToDatabase,disconnectFromDatabase } from './mongoconnect.js'; // Import the connectDB function
+import { getAllUsers, addUser, deleteUser, getUser } from './userFunctions.js'; 
+import { insertContact, getAllContacts, deleteContact,updateContact } from './mongodb.js'; 
+import { connectToDatabase,disconnectFromDatabase } from './mongoconnect.js'; 
 import { get } from 'mongoose';
 dotenv.config();
 
@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
-app.use(morgan('dev'));    // Logger
+app.use(morgan('dev'));    
 
 app.get('/contacts', async (req, res) => {
   const userId = req.query.userId;
@@ -97,7 +97,7 @@ app.get('/users', async (req, res) => {
     }
   });
   
-  // Endpoint to add a new user
+
   app.post('/users', async (req, res) => {
     const { email, password } = req.body;
     if (!email || !password) {
@@ -127,7 +127,8 @@ app.get('/users', async (req, res) => {
       res.status(500).send(`Error creating user: ${err.message}`);
     }
   });
-  // Endpoint to delete a user
+ 
+  
   app.delete('/users/:email', async (req, res) => {
     const { email } = req.params;
     try {

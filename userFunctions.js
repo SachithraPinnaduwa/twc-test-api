@@ -1,4 +1,4 @@
-// UserFunctions.js
+
 import { User } from './models/user.js';
 
 // Function to add a new user

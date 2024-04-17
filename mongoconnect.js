@@ -1,4 +1,4 @@
-// Importing connect and disconnect from mongoose using ES Module syntax
+
 import mongoose from 'mongoose';
 
 const { connect, disconnect } = mongoose;

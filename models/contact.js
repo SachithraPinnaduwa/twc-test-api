@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 
-// Defining the contact schema
 const contactSchema = new mongoose.Schema({
   full_name: {
     type: String,
@@ -13,7 +12,7 @@ const contactSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
-    unique: true, // Email serves as a primary key in the SQL table, so it should be unique
+    unique: true, 
   },
   phone: {
     type: String,
